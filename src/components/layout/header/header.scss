@@ -11,20 +11,56 @@
 	// .header__logo
 	&__logo {
 		width: 125px;
+		position: relative;
+		z-index: 1;
+		svg {
+			path.path-white {
+				fill: #fff;
+				transition: fill 0.3s;
+
+				[data-fls-menu-open] & {
+					fill: #444;
+				}
+			}
+		}
 	}
 	// .header__actions
 	&__actions {
 		display: flex;
-		align-items: center;
 		column-gap: 4px;
 		row-gap: 10px;
 
 		@media (width < toEm($tablet)) {
-			justify-content: center;
-			flex-wrap: wrap;
+			flex-direction: column;
+			row-gap: 6px;
 		}
 	}
 	// .header__button
 	&__button {
+	}
+}
+.header {
+	// .header__container
+	&__container {
+	}
+	// .header__logo
+	&__logo {
+	}
+	// .header__actions
+	&__actions {
+	}
+	// .header__button
+	&__button {
+	}
+}
+.button {
+	// .button--primary
+	&--primary {
+	}
+	// .button--icon
+	&--icon {
+	}
+	// .button--accent
+	&--accent {
 	}
 }

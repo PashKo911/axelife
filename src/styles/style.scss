@@ -124,6 +124,15 @@ body {
 	}
 	// .button--icon
 	&--icon {
+		@media (any-hover: hover) {
+			&:hover svg {
+				stroke: var(--contrast-hover-color);
+			}
+		}
+		svg {
+			stroke: var(--contrast-color);
+			transition: stroke 0.25s;
+		}
 	}
 	// .button--accent
 	&--accent {
@@ -133,6 +142,12 @@ body {
 			&:hover {
 				color: var(--contrast-hover-color);
 			}
+		}
+	}
+	&.header__button {
+		@media (width < toEm($tablet)) {
+			font-size: 20px;
+			min-height: 48px;
 		}
 	}
 }

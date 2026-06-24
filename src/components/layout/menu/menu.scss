@@ -18,8 +18,7 @@
 			pointer-events: none;
 			display: flex;
 			flex-direction: column;
-			align-items: center;
-			justify-content: center;
+			justify-content: space-between;
 			row-gap: 50px;
 
 			[data-fls-loaded] & {
@@ -36,14 +35,11 @@
 	// .menu__list
 	&__list {
 		display: flex;
-		align-items: center;
 		@include adaptiveValue('column-gap', 30, 15, 0, $containerWidth, 992);
 
 		@media (max-width: toEm($tablet)) {
 			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			row-gap: 20px;
+			row-gap: 15px;
 		}
 	}
 	// .menu__item
@@ -95,41 +91,32 @@
 	@media (max-width: toEm($tablet)) {
 		display: block;
 		position: relative;
-		width: toRem(30);
-		height: toRem(18);
+		width: toRem(40);
+		height: toRem(40);
+		border-radius: 4px;
+		background-color: var(--accent-color);
 		z-index: 5;
 		@media (any-hover: none) {
 			cursor: default;
 		}
-		span,
 		&::before,
 		&::after {
 			content: '';
 			transition: all 0.3s ease 0s;
-			right: 0;
+			left: 7px;
 			position: absolute;
-			width: 100%;
+			width: 26px;
 			height: 2px;
 			will-change: opacity;
 			background-color: var(--contrast-color);
-
-			[data-fls-menu-open] & {
-				background-color: var(--main-color);
-			}
 		}
 		&::before {
-			top: 0;
+			top: 16px;
 		}
 		&::after {
-			bottom: 0;
-		}
-		span {
-			top: calc(50% - 1px);
+			bottom: 16px;
 		}
 		[data-fls-menu-open] & {
-			span {
-				transform: scaleX(0);
-			}
 			&::before,
 			&::after {
 			}
