@@ -1,0 +1,15 @@
+:root {
+	/* Шрифты */
+	--font-family: 'Satoshi', sans-serif;
+	--font-size: 16px;
+
+	/* Цвета */
+	--main-color: #404040;
+	--accent-color: #ff6a38;
+	--accent-hover-color: #ff612b;
+
+	--contrast-color: #f1f1f1;
+	--contrast-hover-color: rgb(241, 241, 241, 0.7);
+
+	--dark-gray-color: #f1f1f166;
+}

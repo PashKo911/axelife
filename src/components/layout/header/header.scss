@@ -1,0 +1,30 @@
+.header {
+	// .header__container
+	&__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		column-gap: 20px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	// .header__logo
+	&__logo {
+		width: 125px;
+	}
+	// .header__actions
+	&__actions {
+		display: flex;
+		align-items: center;
+		column-gap: 4px;
+		row-gap: 10px;
+
+		@media (width < toEm($tablet)) {
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+	}
+	// .header__button
+	&__button {
+	}
+}
