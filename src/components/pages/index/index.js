@@ -30,11 +30,18 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0)
 
 // ============================================================================
+// SCROLL STORY — timing constants
+// ============================================================================
 
 const HERO_VIDEO_DURATION = 11.05
+const HERO_SCROLL_DISTANCE = 2000
+
+function getPanelScrollDistance() {
+	return window.innerHeight
+}
 
 // ============================================================================
-// HERO INTRO
+// HERO INTRO (load-time, pre-scroll)
 // ============================================================================
 
 function initHeroIntro() {
@@ -96,19 +103,32 @@ function initHeroIntro() {
 }
 
 // ============================================================================
-// HERO VIDEO
+// SCROLL STORY — single master timeline
+// One ScrollTrigger drives the entire page sequence: hero video scrub,
+// then each stacked panel slides up (yPercent 100 → 0) in strict order.
 // ============================================================================
 
-function initHeroScrollVideo() {
-	const hero = document.querySelector('.hero')
+function initScrollStory() {
+	const story = document.querySelector('[data-scroll-story]')
+	const panels = gsap.utils.toArray('[data-stack-panel]')
+	const hero = panels[0]
 
-	if (!hero) return
+	if (!story || !hero) return
 
 	const video = hero.querySelector('.hero__video-media')
 	const title = hero.querySelector('.hero__title')
 	const cueBlocks = hero.querySelectorAll('[data-hero-video-cue]')
 
 	if (!video) return
+
+	// Layer panels: later sections sit above earlier ones.
+	panels.forEach((panel, index) => {
+		gsap.set(panel, { zIndex: index + 1 })
+
+		if (index > 0) {
+			gsap.set(panel, { yPercent: 100 })
+		}
+	})
 
 	video.pause()
 	video.currentTime = 0
@@ -118,21 +138,32 @@ function initHeroScrollVideo() {
 		y: 48,
 	})
 
-	function createTimeline() {
-		const duration = video.duration || HERO_VIDEO_DURATION
+	function buildMasterTimeline() {
+		const videoDuration = video.duration || HERO_VIDEO_DURATION
+		const overlayPanels = panels.slice(1)
+		const panelCount = overlayPanels.length
+		const panelScrollPx = getPanelScrollDistance()
 
-		const playhead = {
-			time: 0,
-		}
+		// Map scroll pixels to timeline duration so scrub speed stays consistent.
+		const panelTimelineDuration = (panelScrollPx / HERO_SCROLL_DISTANCE) * videoDuration
+		const totalScrollPx = HERO_SCROLL_DISTANCE + panelCount * panelScrollPx
 
-		const tl = gsap.timeline({
+		const playhead = { time: 0 }
+
+		// ---------------------------------------------------------------------
+		// MASTER TIMELINE + SINGLE SCROLLTRIGGER
+		// trigger: the pinned viewport wrapper
+		// scrub: ties scroll position 1:1 to timeline progress
+		// end: total scroll distance across all phases
+		// ---------------------------------------------------------------------
+		const masterTl = gsap.timeline({
 			defaults: {
 				ease: 'none',
 			},
 			scrollTrigger: {
-				trigger: hero,
+				trigger: story,
 				start: 'top top',
-				end: '+=2000',
+				end: () => `+=${totalScrollPx}`,
 				pin: true,
 				scrub: 1,
 				anticipatePin: 1,
@@ -141,51 +172,62 @@ function initHeroScrollVideo() {
 		})
 
 		// ---------------------------------------------------------------------
-		// VIDEO SCRUB
+		// PHASE 1 — Hero video scrub
 		// ---------------------------------------------------------------------
+		masterTl.addLabel('hero', 0)
 
-		tl.to(
+		masterTl.to(
 			playhead,
 			{
-				time: duration,
-				duration,
+				time: videoDuration,
+				duration: videoDuration,
 				onUpdate: () => {
 					video.currentTime = playhead.time
 				},
 			},
-			0
+			'hero'
 		)
 
-		// ---------------------------------------------------------------------
-		// TITLE HIDE AT 4s
-		// ---------------------------------------------------------------------
-
 		if (title) {
-			tl.to(
+			masterTl.to(
 				title,
 				{
 					autoAlpha: 0,
 					y: -24,
 					duration: 1,
+					ease: 'power2.out',
 				},
-				2.8
+				'hero+=2.8'
 			)
 		}
 
-		// ---------------------------------------------------------------------
-		// CUE BLOCKS
-		// ---------------------------------------------------------------------
-
 		cueBlocks.forEach((block) => {
-			tl.to(
+			masterTl.to(
 				block,
 				{
 					autoAlpha: 1,
 					y: 0,
-					duration: 2.5,
+					duration: 4.5,
 					ease: 'power2.out',
 				},
-				6
+				'hero+=6'
+			)
+		})
+
+		// ---------------------------------------------------------------------
+		// PHASE 2+ — Stacked panel transitions (strictly sequential)
+		// Each overlay panel enters only after the previous phase completes.
+		// ---------------------------------------------------------------------
+		overlayPanels.forEach((panel, index) => {
+			const phaseStart = videoDuration + index * panelTimelineDuration
+			const label = `panel-${index + 1}`
+
+			masterTl.addLabel(label, phaseStart)
+			masterTl.fromTo(
+				panel,
+				{ yPercent: 100 },
+				{ yPercent: 0, duration: panelTimelineDuration, ease: 'none' },
+				label
 			)
 		})
 
@@ -193,9 +235,9 @@ function initHeroScrollVideo() {
 	}
 
 	if (video.readyState >= 1) {
-		createTimeline()
+		buildMasterTimeline()
 	} else {
-		video.addEventListener('loadedmetadata', createTimeline, {
+		video.addEventListener('loadedmetadata', buildMasterTimeline, {
 			once: true,
 		})
 	}
@@ -204,7 +246,7 @@ function initHeroScrollVideo() {
 // ============================================================================
 // START APP
 // ============================================================================
-initHeroScrollVideo()
+initScrollStory()
 addLoadedAttr(() => {
 	initHeroIntro()
 })

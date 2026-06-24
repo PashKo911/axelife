@@ -1,3 +1,15 @@
+.index {
+	position: relative;
+}
+
+// Pinned viewport — all panels stack absolutely inside this container.
+.scroll-story {
+	position: relative;
+	width: 100%;
+	height: 100svh;
+	overflow: hidden;
+}
+
 .hero {
 	position: relative;
 	overflow: hidden;
@@ -7,11 +19,20 @@
 
 	&__video {
 		position: absolute;
-		inset: 0;
+		left: 50%;
+		transform: translate(-50%, 0);
 		width: 100%;
 		height: 100%;
 		z-index: 1;
 		pointer-events: none;
+
+		@media (width < toEm($mobile)) {
+			width: 140%;
+		}
+
+		@media (width < toEm($mobileSmall)) {
+			width: 190%;
+		}
 	}
 
 	&__video-media {
@@ -46,11 +67,15 @@
 
 	&__actions {
 		position: absolute;
-		bottom: 48px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 15px;
+		bottom: 48px;
+
+		@media (width < toEm($mobile)) {
+			bottom: 30px;
+		}
 	}
 
 	&__actions-label {
@@ -79,14 +104,19 @@
 	&__content-next {
 		position: absolute;
 		left: 50%;
+		width: 100%;
 		max-width: 423px;
-		transform: translate(-50%, 48px);
-		bottom: 196px;
+		transform: translate(-50%, 0);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		row-gap: 24px;
+		bottom: 186px;
+
+		@media (width < toEm($mobileSmall)) {
+			bottom: 136px;
+		}
 	}
 
 	// .hero__content-text
@@ -96,9 +126,65 @@
 		font-weight: 500;
 		line-height: 1.2;
 		letter-spacing: toEm(-0.32, 16);
+		@include adaptiveValue('font-size', 16, 14);
 	}
 	// .hero__content-link
 	&__content-link {
 		width: max-content;
+	}
+}
+
+// ============================================================================
+// STACKED PANELS (overlapping pinned sections)
+// ============================================================================
+
+.stack-panel {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 100svh;
+	overflow: hidden;
+}
+
+.how-works {
+	background-color: var(--contrast-color);
+	// .how-works__container
+	&__container {
+		padding-top: 130px;
+		padding-bottom: 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	// .how-works__head
+	&__head {
+		width: 100%;
+		max-width: 597px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 8px;
+	}
+	// .how-works__label
+	&__label {
+		color: rgba(64, 64, 64, 0.5);
+		text-align: center;
+		font-weight: 500;
+		letter-spacing: toEm(-0.16, 16);
+		text-transform: capitalize;
+	}
+	// .how-works__title
+	&__title {
+		text-align: center;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 1.05;
+		letter-spacing: toEm(-0.92, 46);
+		text-transform: capitalize;
+		@include adaptiveValue('font-size', 46, 32);
+	}
+	// .how-works__content
+	&__content {
 	}
 }
