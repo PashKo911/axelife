@@ -1,108 +1,113 @@
-/*
-Документація по роботі у шаблоні: 
-Документація слайдера: https://swiperjs.com/
-Сніппет(HTML): swiper
-*/
+import Swiper from 'swiper'
+import { Navigation, EffectFade, Thumbs } from 'swiper/modules'
 
-// Підключаємо слайдер Swiper з node_modules
-// При необхідності підключаємо додаткові модулі слайдера, вказуючи їх у {} через кому
-// Приклад: { Navigation, Autoplay }
-import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
-/*
-Основні модулі слайдера:
-Navigation, Pagination, Autoplay, 
-EffectFade, Lazy, Manipulation
-Детальніше дивись https://swiperjs.com/
-*/
+import './slider.scss'
+// import 'swiper/css/effect-fade'
 
-// Стилі Swiper
-// Підключення базових стилів
-import "./slider.scss";
-// Повний набір стилів з node_modules
-// import 'swiper/css/bundle';
+function initHowWorksSliders() {
+	const thumbsEl = document.querySelector('.how-works__thumbs-slider')
+	const mediaEl = document.querySelector('.how-works__media-slider')
+	const contentEl = document.querySelector('.how-works__content-slider')
+	const navEl = document.querySelector('.how-works__nav-slider')
 
-// Ініціалізація слайдерів
-function initSliders() {
-	// Список слайдерів
-	// Перевіряємо, чи є слайдер на сторінці
-	if (document.querySelector('[data-fls-slider]')) { // <- Вказуємо склас потрібного слайдера
-		// Створюємо слайдер
-		new Swiper('[data-fls-slider]', { // <- Вказуємо склас потрібного слайдера
-			// Підключаємо модулі слайдера
-			// для конкретного випадку
-			modules: [Navigation],
-			observer: true,
-			observeParents: true,
-			slidesPerView: 1,
-			spaceBetween: 0,
-			//autoHeight: true,
-			speed: 800,
+	if (!thumbsEl || !mediaEl || !contentEl || !navEl) return
 
-			//touchRatio: 0,
-			//simulateTouch: false,
-			//loop: true,
-			//preloadImages: false,
-			//lazy: true,
+	// THUMBS
+	const thumbsSlider = new Swiper(thumbsEl, {
+		modules: [Navigation],
 
-			/*
-			// Ефекти
-			effect: 'fade',
-			autoplay: {
-				delay: 3000,
-				disableOnInteraction: false,
-			},
-			*/
+		observer: true,
+		observeParents: true,
 
-			// Пагінація
-			/*
-			pagination: {
-				el: '.swiper-pagination',
-				clickable: true,
-			},
-			*/
+		direction: 'vertical',
 
-			// Скроллбар
-			/*
-			scrollbar: {
-				el: '.swiper-scrollbar',
-				draggable: true,
-			},
-			*/
+		slidesPerView: 4,
+		spaceBetween: 12,
 
-			// Кнопки "вліво/вправо"
-			navigation: {
-				prevEl: '.swiper-button-prev',
-				nextEl: '.swiper-button-next',
-			},
-			/*
-			// Брейкпоінти
-			breakpoints: {
-				640: {
-					slidesPerView: 1,
-					spaceBetween: 0,
-					autoHeight: true,
-				},
-				768: {
-					slidesPerView: 2,
-					spaceBetween: 20,
-				},
-				992: {
-					slidesPerView: 3,
-					spaceBetween: 20,
-				},
-				1268: {
-					slidesPerView: 4,
-					spaceBetween: 30,
-				},
-			},
-			*/
-			// Події
-			on: {
+		speed: 800,
 
-			}
-		});
-	}
+		watchSlidesProgress: true,
+		slideToClickedSlide: true,
+	})
+
+	// NAV TITLE
+	const navSlider = new Swiper(navEl, {
+		modules: [EffectFade],
+
+		observer: true,
+		observeParents: true,
+
+		slidesPerView: 1,
+
+		speed: 800,
+
+		allowTouchMove: false,
+
+		effect: 'fade',
+		fadeEffect: {
+			crossFade: true,
+		},
+	})
+
+	// CONTENT
+	const contentSlider = new Swiper(contentEl, {
+		modules: [EffectFade],
+
+		observer: true,
+		observeParents: true,
+
+		slidesPerView: 1,
+
+		speed: 800,
+
+		allowTouchMove: false,
+
+		effect: 'fade',
+		fadeEffect: {
+			crossFade: true,
+		},
+	})
+
+	// MEDIA (главный)
+	const mediaSlider = new Swiper(mediaEl, {
+		modules: [Navigation, EffectFade, Thumbs],
+
+		observer: true,
+		observeParents: true,
+
+		slidesPerView: 1,
+
+		speed: 800,
+
+		effect: 'fade',
+		fadeEffect: {
+			crossFade: true,
+		},
+
+		thumbs: {
+			swiper: thumbsSlider,
+		},
+
+		navigation: {
+			prevEl: '.how-works__swiper-button-prev',
+			nextEl: '.how-works__swiper-button-next',
+		},
+	})
+
+	// синхронизация всех остальных
+	mediaSlider.on('slideChange', () => {
+		const index = mediaSlider.activeIndex
+
+		contentSlider.slideTo(index)
+		navSlider.slideTo(index)
+	})
+
+	thumbsSlider.on('slideChange', () => {
+		const index = thumbsSlider.activeIndex
+
+		contentSlider.slideTo(index)
+		navSlider.slideTo(index)
+	})
 }
-document.querySelector('[data-fls-slider]') ?
-	window.addEventListener("load", initSliders) : null
+
+window.addEventListener('load', initHowWorksSliders)
