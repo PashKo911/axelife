@@ -410,3 +410,123 @@
 	}
 }
 //========================================================================================================================================================
+
+.reveal {
+	width: 100%;
+	height: 100svh;
+	overflow: hidden;
+	// position: relative;
+
+	// .reveal__slides
+	&__slides {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+	// .reveal__slide
+	&__slide {
+		position: absolute;
+		inset: 0;
+		will-change: clip-path;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+	}
+	// .reveal__container
+	&__container {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		height: 100%;
+		transform: translate(-50%, 0);
+		width: 100%;
+		@include adaptiveValue('padding-top', 135, 50);
+		@include adaptiveValue('padding-bottom', 80, 40);
+	}
+
+	// .reveal__header
+	&__header {
+		position: relative;
+		width: 100%;
+		max-width: 690px;
+
+		&:not(:last-child) {
+			@include adaptiveValue('margin-bottom', 80, 30);
+		}
+	}
+	// .reveal__title
+	&__title {
+		text-align: left;
+
+		&:not(:last-child) {
+			margin-bottom: 30px;
+		}
+	}
+	// .reveal__content-link
+	&__content-link {
+		width: max-content;
+	}
+
+	// .reveal__content-link
+	&__content-link {
+	}
+	// .reveal__progress
+	&__progress {
+		width: 80px;
+		height: 400px;
+		pointer-events: none;
+		position: relative;
+	}
+	// .reveal__progress-svg
+	&__progress-svg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+	// .reveal__progress-track
+	&__progress-track {
+		stroke: rgba(230, 230, 230, 0.2);
+		stroke-width: 2;
+	}
+	// .reveal__progress-fill
+	&__progress-fill {
+		stroke: var(--contrast-color);
+		stroke-width: 2;
+	}
+	&__progress-label {
+		color: var(--contrast-color);
+		position: absolute;
+		opacity: 0;
+		transform: translate(0, -50%);
+		transition: opacity 0.5s;
+
+		&.active {
+			opacity: 1;
+		}
+		// .reveal__progress-label--1
+		&--1 {
+			top: 0;
+		}
+		// .reveal__progress-label--1
+		&--2 {
+			top: 33.333%;
+		}
+		// .reveal__progress-label--1
+		&--3 {
+			top: 66.666%;
+		}
+		// .reveal__progress-label--1
+		&--4 {
+			top: 100%;
+		}
+	}
+
+	// .reveal__content
+	&__content {
+	}
+}

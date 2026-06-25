@@ -230,6 +230,10 @@ a {
 	span {
 		text-transform: none;
 	}
+	// .section-title--white
+	&--white {
+		color: var(--contrast-color);
+	}
 }
 
 [data-stack-panel] {

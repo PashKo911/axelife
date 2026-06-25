@@ -111,8 +111,35 @@ export function initScrollStory() {
 		}
 	})
 
+	const revealPanel = document.querySelector('.reveal')
+	const revealSlides = revealPanel?.querySelectorAll('.reveal__slide')
+	const revealProgressFill = revealPanel?.querySelector('.reveal__progress-fill')
+	const revealLabels = revealPanel?.querySelectorAll('.reveal__progress-label')
+
 	video.pause()
 	video.currentTime = 0
+
+	if (revealSlides?.length) {
+		revealSlides.forEach((slide, index) => {
+			if (index === 0) return
+
+			gsap.set(slide, {
+				clipPath: 'inset(100% 0 0 0)',
+			})
+		})
+	}
+
+	if (revealProgressFill) {
+		gsap.set(revealProgressFill, {
+			attr: {
+				y2: 0,
+			},
+		})
+	}
+
+	if (revealLabels?.length) {
+		revealLabels[0].classList.add('active')
+	}
 
 	gsap.set(cueBlocks, {
 		autoAlpha: 0,
@@ -122,16 +149,47 @@ export function initScrollStory() {
 	function buildMasterTimeline() {
 		const videoDuration = video.duration || HERO_VIDEO_DURATION
 		const overlayPanels = panels.slice(1)
-
 		const panelHeights = overlayPanels.map((panel) => Math.max(panel.scrollHeight, window.innerHeight))
-
 		const panelDurations = panelHeights.map((height) => (height / HERO_SCROLL_DISTANCE) * videoDuration)
-
 		const totalPanelsScroll = panelHeights.reduce((sum, height) => sum + height, 0)
-
 		const totalScrollPx = HERO_SCROLL_DISTANCE + totalPanelsScroll
-
 		const playhead = { time: 0 }
+
+		const revealTl = gsap.timeline()
+
+		if (revealSlides?.length) {
+			revealSlides.forEach((slide, index) => {
+				if (index === 0) return
+
+				revealTl.to(slide, {
+					clipPath: 'inset(0% 0 0 0)',
+					duration: 1,
+					ease: 'none',
+				})
+
+				revealTl.call(() => {
+					if (!revealLabels?.length) return
+					revealLabels.forEach((label) => {
+						label.classList.remove('active')
+					})
+					revealLabels[index].classList.add('active')
+				})
+			})
+
+			if (revealProgressFill) {
+				revealTl.to(
+					revealProgressFill,
+					{
+						attr: {
+							y2: 400,
+						},
+						duration: revealSlides.length - 1,
+						ease: 'none',
+					},
+					0
+				)
+			}
+		}
 
 		const masterTl = gsap.timeline({
 			defaults: {
@@ -194,13 +252,9 @@ export function initScrollStory() {
 
 		overlayPanels.forEach((panel, index) => {
 			const panelHeight = panel.scrollHeight
-
 			const internalScroll = Math.max(0, panelHeight - window.innerHeight)
-
 			const enterDuration = panelDurations[index] * 0.7
-
 			const scrollDuration = internalScroll > 0 ? panelDurations[index] : 0
-
 			const label = `panel-${index + 1}`
 
 			masterTl.addLabel(label, phaseStart)
@@ -219,7 +273,10 @@ export function initScrollStory() {
 				label
 			)
 
-			// Скролл содержимого панели
+			if (panel.classList.contains('reveal')) {
+				masterTl.add(revealTl, `${label}+=${enterDuration}`)
+			}
+
 			if (internalScroll > 0) {
 				masterTl.to(
 					panel,
