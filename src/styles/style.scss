@@ -218,6 +218,20 @@ a {
 	color: #f56838;
 }
 
+.section-title {
+	text-align: center;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 1.05;
+	letter-spacing: toEm(-0.92, 46);
+	text-transform: capitalize;
+	@include adaptiveValue('font-size', 46, 26);
+
+	span {
+		text-transform: none;
+	}
+}
+
 [data-stack-panel] {
 	position: absolute;
 	top: 0;
@@ -226,4 +240,24 @@ a {
 	width: 100%;
 	min-height: 100svh;
 	overflow: hidden;
+}
+
+@keyframes softFadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(18px);
+		filter: blur(6px);
+	}
+
+	60% {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
 }
