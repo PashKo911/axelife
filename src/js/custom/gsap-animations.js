@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { debounce } from '../common/functions'
 import { addTouchAttr, addLoadedAttr } from '@js/common/functions.js'
 
 // ============================================================================
@@ -100,7 +101,10 @@ export function initScrollStory() {
 
 	// Layer panels: later sections sit above earlier ones.
 	panels.forEach((panel, index) => {
-		gsap.set(panel, { zIndex: index + 1 })
+		gsap.set(panel, {
+			zIndex: index + 1,
+			y: 0,
+		})
 
 		if (index > 0) {
 			gsap.set(panel, { yPercent: 100 })
@@ -189,23 +193,46 @@ export function initScrollStory() {
 		let phaseStart = videoDuration
 
 		overlayPanels.forEach((panel, index) => {
-			const duration = panelDurations[index]
+			const panelHeight = panel.scrollHeight
+
+			const internalScroll = Math.max(0, panelHeight - window.innerHeight)
+
+			const enterDuration = panelDurations[index] * 0.7
+
+			const scrollDuration = internalScroll > 0 ? panelDurations[index] : 0
+
 			const label = `panel-${index + 1}`
 
 			masterTl.addLabel(label, phaseStart)
 
+			// Заезд панели
 			masterTl.fromTo(
 				panel,
-				{ yPercent: 100 },
+				{
+					yPercent: 100,
+				},
 				{
 					yPercent: 0,
-					duration,
+					duration: enterDuration,
 					ease: 'none',
 				},
 				label
 			)
 
-			phaseStart += duration
+			// Скролл содержимого панели
+			if (internalScroll > 0) {
+				masterTl.to(
+					panel,
+					{
+						y: -internalScroll,
+						duration: scrollDuration,
+						ease: 'none',
+					},
+					`${label}+=${enterDuration}`
+				)
+			}
+
+			phaseStart += enterDuration + scrollDuration
 		})
 
 		ScrollTrigger.refresh()
@@ -218,6 +245,12 @@ export function initScrollStory() {
 			once: true,
 		})
 	}
+
+	const handleResize = debounce(200, () => {
+		ScrollTrigger.refresh()
+	})
+
+	window.addEventListener('resize', handleResize)
 }
 
 // ============================================================================

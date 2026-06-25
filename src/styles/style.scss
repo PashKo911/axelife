@@ -207,8 +207,23 @@ a {
 			background-color: #c7c7c7;
 		}
 	}
+
+	&.swiper-button-disabled {
+		opacity: 0.6;
+		pointer-events: none;
+	}
 }
 
 .orange {
 	color: #f56838;
+}
+
+[data-stack-panel] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	min-height: 100svh;
+	overflow: hidden;
 }

@@ -1,12 +1,16 @@
-import { addTouchAttr, addLoadedAttr, isMobile, FLS } from '@js/common/functions.js'
+import { addTouchAttr, addLoadedAttr } from '@js/common/functions.js'
 import { initLenis } from './custom/lenis.js'
 import { initScrollStory, initHeroIntro } from './custom/gsap-animations.js'
+import { initHowWorksSliders } from '../components/layout/slider/slider.js'
 
-addLoadedAttr()
 addTouchAttr()
+
 initLenis()
 
-initScrollStory()
-addLoadedAttr(() => {
+addLoadedAttr(async () => {
+	await initHowWorksSliders()
+
+	initScrollStory()
+
 	initHeroIntro()
 })

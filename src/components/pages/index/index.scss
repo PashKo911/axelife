@@ -2,20 +2,8 @@
 	position: relative;
 }
 
-// Pinned viewport — all panels stack absolutely inside this container.
 .scroll-story {
 	position: relative;
-	width: 100%;
-	min-height: 100svh;
-	overflow: hidden;
-}
-
-.stack-panel {
-	position: absolute;
-	// inset: 0;
-	top: 0;
-	left: 0;
-	right: 0;
 	width: 100%;
 	min-height: 100svh;
 	overflow: hidden;
@@ -145,15 +133,11 @@
 	}
 }
 
-// ============================================================================
-// STACKED PANELS (overlapping pinned sections)
-// ============================================================================
-
 .how-works {
 	background-color: var(--contrast-color);
 	// .how-works__container
 	&__container {
-		padding-top: 130px;
+		padding-top: 110px;
 		padding-bottom: 40px;
 		display: flex;
 		flex-direction: column;
@@ -169,7 +153,7 @@
 		row-gap: 8px;
 
 		&:not(:last-child) {
-			@include adaptiveValue('margin-bottom', 94, 30);
+			@include adaptiveValue('margin-bottom', 60, 30);
 		}
 	}
 	// .how-works__label
@@ -188,7 +172,7 @@
 		line-height: 1.05;
 		letter-spacing: toEm(-0.92, 46);
 		text-transform: capitalize;
-		@include adaptiveValue('font-size', 46, 32);
+		@include adaptiveValue('font-size', 46, 26);
 
 		span {
 			text-transform: none;
@@ -206,12 +190,30 @@
 	&__content-left {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between; //??
-		max-width: 500px;
+		justify-content: space-between;
 		min-width: 0;
-		flex-basis: 50%;
-		row-gap: 40px;
 		flex-grow: 1;
+		@include adaptiveValue('row-gap', 40, 30);
+
+		@media (min-width: $tablet) {
+			max-width: 500px;
+		}
+	}
+
+	// .how-works__content-right
+	&__content-right {
+		min-width: 0;
+		display: flex;
+		aspect-ratio: 832 / 661;
+		column-gap: 12px;
+		@include adaptiveValue('width', 812, 500, 0, $containerWidth, 991.98);
+
+		@media (width < toEm($tablet)) {
+			order: 2;
+			width: 100%;
+			max-width: 612px;
+			align-self: center;
+		}
 	}
 	// .how-works__slider-navigation
 	&__slider-navigation {
@@ -219,15 +221,27 @@
 		align-items: center;
 		min-width: 0;
 		width: 100%;
-		max-width: 384px;
-		@include adaptiveValue('column-gap', 40, 20);
+		max-width: 380px;
+		@include adaptiveValue('column-gap', 40, 15);
+
+		@media (width < toEm($tablet)) {
+			order: 1;
+			align-self: center;
+		}
 	}
 	// .how-works__swiper-button-prev
 	&__swiper-button-prev {
+		@media (width < toEm($tablet)) {
+			order: 1;
+		}
 	}
 	// .how-works__nav-slider
 	&__nav-slider {
 		display: flex;
+
+		@media (width < toEm($tablet)) {
+			order: 2;
+		}
 	}
 	// .how-works__nav-wrapper
 	&__nav-wrapper {
@@ -241,28 +255,28 @@
 		justify-content: center;
 		align-items: center;
 		letter-spacing: toEm(-0.16, 16);
+		@include adaptiveValue('font-size', 16, 14);
 	}
 	// .how-works__swiper-button-next
 	&__swiper-button-next {
+		@media (width < toEm($tablet)) {
+			order: 3;
+		}
 	}
 	// .how-works__content-slider
 	&__content-slider {
 		width: 100%;
 		max-width: 500px;
+
+		@media (width < toEm($tablet)) {
+			order: 3;
+		}
 	}
 	// .how-works__content-wrapper
 	&__content-wrapper {
 	}
 	// .how-works__content-slide
 	&__content-slide {
-	}
-	// .how-works__content-right
-	&__content-right {
-		min-width: 0;
-		display: flex;
-		aspect-ratio: 832 / 661;
-		column-gap: 12px;
-		@include adaptiveValue('width', 832, 500, 0, 991.98);
 	}
 	// .how-works__thumbs-slider
 	&__thumbs-slider {
@@ -272,6 +286,8 @@
 		height: auto;
 		align-self: flex-start;
 		max-height: 528px;
+		max-height: 79.879%;
+
 		cursor: pointer;
 	}
 	// .how-works__thumbs-wrapper
@@ -283,6 +299,7 @@
 		overflow: hidden;
 		border-radius: 8px;
 		border: 1px solid transparent;
+		aspect-ratio: 98 / 123;
 		transition: border-color 0.4s;
 
 		@media (any-hover: hover) {
@@ -301,7 +318,7 @@
 		line-height: 1.1;
 		letter-spacing: toEm(-0.72, 36);
 		text-transform: capitalize;
-		@include adaptiveValue('font-size', 36, 24);
+		@include adaptiveValue('font-size', 36, 22);
 
 		&:not(:last-child) {
 			margin-bottom: 10px;
@@ -313,7 +330,7 @@
 		gap: 10px;
 
 		&:not(:last-child) {
-			@include adaptiveValue('margin-bottom', 63, 30);
+			@include adaptiveValue('margin-bottom', 63, 20);
 		}
 		p {
 			color: #40404099;
@@ -330,12 +347,20 @@
 		min-width: 0;
 		flex-shrink: 0;
 		flex-basis: 88.0488%;
+		flex-basis: 86.7788%;
 	}
 	// .how-works__media-wrapper
 	&__media-wrapper {
 	}
 	// .how-works__media-slide
 	&__media-slide {
-		border-radius: 8px;
+		overflow: hidden;
+
+		img {
+			border-radius: 8px;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
 	}
 }

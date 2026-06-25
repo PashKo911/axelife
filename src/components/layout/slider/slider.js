@@ -4,7 +4,7 @@ import { Navigation, EffectFade, Thumbs } from 'swiper/modules'
 import './slider.scss'
 // import 'swiper/css/effect-fade'
 
-function initHowWorksSliders() {
+export async function initHowWorksSliders() {
 	const thumbsEl = document.querySelector('.how-works__thumbs-slider')
 	const mediaEl = document.querySelector('.how-works__media-slider')
 	const contentEl = document.querySelector('.how-works__content-slider')
@@ -109,5 +109,3 @@ function initHowWorksSliders() {
 		navSlider.slideTo(index)
 	})
 }
-
-window.addEventListener('load', initHowWorksSliders)
