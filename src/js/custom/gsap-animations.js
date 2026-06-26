@@ -169,10 +169,15 @@ export function initScrollStory() {
 			revealSlides.forEach((slide, index) => {
 				if (index === 0) return
 
+				// revealTl.to(slide, {
+				// 	clipPath: 'inset(0% 0 0 0)',
+				// 	duration: 1,
+				// 	ease: 'none',
+				// })
 				revealTl.to(slide, {
 					clipPath: 'inset(0% 0 0 0)',
-					duration: 1,
-					ease: 'none',
+					duration: 3,
+					ease: 'power3.inOut',
 				})
 			})
 
@@ -183,7 +188,7 @@ export function initScrollStory() {
 						attr: {
 							y2: 400,
 						},
-						duration: revealSlides.length - 1,
+						duration: revealTl.duration(),
 						ease: 'none',
 					},
 					0
@@ -289,7 +294,11 @@ export function initScrollStory() {
 				)
 			}
 
-			phaseStart += enterDuration + scrollDuration
+			if (panel.classList.contains('reveal')) {
+				phaseStart += enterDuration + scrollDuration + revealTl.duration() * 0.65
+			} else {
+				phaseStart += enterDuration + scrollDuration
+			}
 		})
 
 		ScrollTrigger.refresh()
