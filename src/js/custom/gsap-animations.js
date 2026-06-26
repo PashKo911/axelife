@@ -12,15 +12,79 @@ gsap.registerPlugin(ScrollTrigger)
 gsap.ticker.lagSmoothing(0)
 
 // ============================================================================
-// SCROLL STORY — timing constants
+// DEVICE
 // ============================================================================
-
-const HERO_VIDEO_DURATION = 11.05
-const HERO_SCROLL_DISTANCE = 2000
+const isMobile = window.innerWidth < 768
 
 // ============================================================================
-// HERO INTRO (load-time, pre-scroll)
+// SCROLL CONFIG
 // ============================================================================
+/**
+ * SCROLL EXPERIENCE CONFIG
+ * Управляет "ощущением скорости" всей сцены ScrollTrigger
+ */
+const CONFIG = {
+	desktop: {
+		/**
+		 * Общая длина скролл-сценария
+		 * > больше = дольше скролл, плавнее переходы
+		 * < меньше = быстрее, агрессивнее
+		 */
+		scrollMultiplier: 1,
+
+		/**
+		 * ScrollTrigger scrub (инерция привязки к скроллу)
+		 * > больше = сильнее "вязкость", мягче движение
+		 * < меньше = резче, быстрее отклик
+		 */
+		scrub: 2,
+
+		/**
+		 * Длительность "заезда" панели (yPercent 100 → 0)
+		 * > больше = плавнее вход секций
+		 * < меньше = резче переключение
+		 */
+		panelEnter: 6,
+
+		/**
+		 * Длительность свайпа reveal-слайдов
+		 * > больше = медленнее, “дороже” переход
+		 * < меньше = быстрее переключение
+		 */
+		revealSwipe: 4,
+
+		/**
+		 * Скорость привязки reveal к scroll timeline
+		 * > больше = сильнее растяжение скроллом
+		 * < меньше = более резкий switch
+		 */
+		revealScrollSpeed: 0.015,
+
+		/**
+		 * Запас длины сцены (кол-во экранов)
+		 * 👉 это тот самый "+6"
+		 * > больше = больше "воздуха", медленнее поток
+		 * < меньше = сцена короче и быстрее
+		 */
+		scenePaddingPanels: 6,
+	},
+
+	mobile: {
+		scrollMultiplier: 3.8,
+		scrub: 1,
+		panelEnter: 8,
+		revealSwipe: 5,
+		revealScrollSpeed: 0.008,
+
+		/**
+		 * На мобиле уменьшаем "воздух"
+		 * потому что физический скролл длиннее сам по себе
+		 */
+		scenePaddingPanels: 4,
+	},
+}
+
+const C = isMobile ? CONFIG.mobile : CONFIG.desktop
 
 export function initHeroIntro() {
 	const header = document.querySelector('.header')
@@ -145,10 +209,10 @@ export function initScrollStory() {
 	function buildMasterTimeline() {
 		const videoDuration = video.duration || HERO_VIDEO_DURATION
 		const overlayPanels = panels.slice(1)
-		const panelHeights = overlayPanels.map((panel) => Math.max(panel.scrollHeight, window.innerHeight))
-		const panelDurations = panelHeights.map((height) => (height / HERO_SCROLL_DISTANCE) * videoDuration)
-		const totalPanelsScroll = panelHeights.reduce((sum, height) => sum + height, 0)
-		const totalScrollPx = HERO_SCROLL_DISTANCE + totalPanelsScroll
+
+		const baseScroll = window.innerHeight * (panels.length + C.scenePaddingPanels)
+		const totalScrollPx = baseScroll * C.scrollMultiplier
+
 		const playhead = { time: 0 }
 
 		const revealTl = gsap.timeline({
@@ -170,7 +234,7 @@ export function initScrollStory() {
 				if (index === 0) return
 				revealTl.to(slide, {
 					clipPath: 'inset(0% 0 0 0)',
-					duration: 3,
+					duration: C.revealSwipe,
 					ease: 'power3.inOut',
 				})
 			})
@@ -199,7 +263,7 @@ export function initScrollStory() {
 				start: 'top top',
 				end: () => `+=${totalScrollPx}`,
 				pin: true,
-				scrub: 1,
+				scrub: C.scrub,
 				anticipatePin: 1,
 				invalidateOnRefresh: true,
 			},
@@ -247,16 +311,15 @@ export function initScrollStory() {
 		})
 
 		// PANELS
-		let phaseStart = videoDuration
 
 		overlayPanels.forEach((panel, index) => {
 			const panelHeight = panel.scrollHeight
 			const internalScroll = Math.max(0, panelHeight - window.innerHeight)
-			const enterDuration = panelDurations[index] * 0.7
-			const scrollDuration = internalScroll > 0 ? panelDurations[index] : 0
+			const enterDuration = C.panelEnter
+			const scrollDuration = internalScroll * C.revealScrollSpeed
 			const label = `panel-${index + 1}`
 
-			masterTl.addLabel(label, phaseStart)
+			masterTl.addLabel(label)
 
 			// Заезд панели
 			masterTl.fromTo(
@@ -286,12 +349,6 @@ export function initScrollStory() {
 					},
 					`${label}+=${enterDuration}`
 				)
-			}
-
-			if (panel.classList.contains('reveal')) {
-				phaseStart += enterDuration + scrollDuration + revealTl.duration() * 0.65
-			} else {
-				phaseStart += enterDuration + scrollDuration
 			}
 		})
 
