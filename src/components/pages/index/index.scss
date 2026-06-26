@@ -121,6 +121,8 @@
 	// .hero__content-text
 	&__content-text {
 		color: rgba(230, 230, 230, 0.6);
+		padding-left: 15px;
+		padding-right: 15px;
 		text-align: center;
 		font-weight: 500;
 		line-height: 1.2;
@@ -414,8 +416,8 @@
 .reveal {
 	width: 100%;
 	height: 100svh;
+	// min-height: 800px;
 	overflow: hidden;
-	// position: relative;
 
 	// .reveal__slides
 	&__slides {
@@ -434,8 +436,43 @@
 			height: 100%;
 			object-fit: cover;
 			display: block;
+
+			@media (width < toEm($mobile)) {
+				object-position: 70%;
+			}
 		}
 	}
+
+	// .reveal__slide-content
+	&__slide-content {
+		display: grid;
+		gap: 14px;
+		width: 100%;
+		padding-left: 40px;
+		max-width: 500px;
+	}
+	// .reveal__slide-content-title
+	&__slide-content-title {
+		color: #e6e6e6;
+		font-weight: 500;
+		line-height: 1.2;
+		letter-spacing: toEm(-0.44, 22);
+		text-transform: capitalize;
+		@include adaptiveValue('font-size', 22, 18);
+	}
+	// .reveal__slide-content-text
+	&__slide-content-text {
+		display: grid;
+		gap: 10px;
+
+		p {
+			color: rgba(230, 230, 230, 0.6);
+			font-weight: 500;
+			line-height: 1.2;
+			letter-spacing: toEm(-0.32, 16);
+		}
+	}
+
 	// .reveal__container
 	&__container {
 		position: absolute;
@@ -444,8 +481,14 @@
 		height: 100%;
 		transform: translate(-50%, 0);
 		width: 100%;
-		@include adaptiveValue('padding-top', 135, 50);
+		@include adaptiveValue('padding-top', 110, 100);
 		@include adaptiveValue('padding-bottom', 80, 40);
+
+		.reveal__slide & {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+		}
 	}
 
 	// .reveal__header
@@ -460,10 +503,13 @@
 	}
 	// .reveal__title
 	&__title {
+		@include adaptiveValue('font-size', 46, 24);
 		text-align: left;
 
 		&:not(:last-child) {
-			margin-bottom: 30px;
+			&:not(:last-child) {
+				@include adaptiveValue('margin-bottom', 30, 20);
+			}
 		}
 	}
 	// .reveal__content-link
@@ -477,15 +523,17 @@
 	// .reveal__progress
 	&__progress {
 		width: 80px;
-		height: 400px;
+		// height: 400px;
+		height: 37.037%;
 		pointer-events: none;
 		position: relative;
 	}
 	// .reveal__progress-svg
 	&__progress-svg {
 		position: absolute;
-		inset: 0;
-		width: 100%;
+		top: 0;
+		left: 0;
+		width: 10px;
 		height: 100%;
 	}
 	// .reveal__progress-track
@@ -501,6 +549,7 @@
 	&__progress-label {
 		color: var(--contrast-color);
 		position: absolute;
+		left: 16px;
 		opacity: 0;
 		transition: opacity 0.5s;
 

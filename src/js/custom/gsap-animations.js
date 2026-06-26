@@ -168,12 +168,6 @@ export function initScrollStory() {
 		if (revealSlides?.length) {
 			revealSlides.forEach((slide, index) => {
 				if (index === 0) return
-
-				// revealTl.to(slide, {
-				// 	clipPath: 'inset(0% 0 0 0)',
-				// 	duration: 1,
-				// 	ease: 'none',
-				// })
 				revealTl.to(slide, {
 					clipPath: 'inset(0% 0 0 0)',
 					duration: 3,
