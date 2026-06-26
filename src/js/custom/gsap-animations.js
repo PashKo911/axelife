@@ -137,10 +137,6 @@ export function initScrollStory() {
 		})
 	}
 
-	if (revealLabels?.length) {
-		revealLabels[0].classList.add('active')
-	}
-
 	gsap.set(cueBlocks, {
 		autoAlpha: 0,
 		y: 48,
@@ -155,7 +151,19 @@ export function initScrollStory() {
 		const totalScrollPx = HERO_SCROLL_DISTANCE + totalPanelsScroll
 		const playhead = { time: 0 }
 
-		const revealTl = gsap.timeline()
+		const revealTl = gsap.timeline({
+			onUpdate() {
+				if (!revealLabels?.length || !revealSlides?.length) return
+
+				const progress = revealTl.progress()
+
+				const activeIndex = Math.min(Math.floor(progress * revealSlides.length), revealSlides.length - 1)
+
+				revealLabels.forEach((label, index) => {
+					label.classList.toggle('active', index === activeIndex)
+				})
+			},
+		})
 
 		if (revealSlides?.length) {
 			revealSlides.forEach((slide, index) => {
@@ -165,14 +173,6 @@ export function initScrollStory() {
 					clipPath: 'inset(0% 0 0 0)',
 					duration: 1,
 					ease: 'none',
-				})
-
-				revealTl.call(() => {
-					if (!revealLabels?.length) return
-					revealLabels.forEach((label) => {
-						label.classList.remove('active')
-					})
-					revealLabels[index].classList.add('active')
 				})
 			})
 
