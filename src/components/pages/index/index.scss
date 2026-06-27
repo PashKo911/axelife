@@ -5,14 +5,14 @@
 .scroll-story {
 	position: relative;
 	width: 100%;
-	min-height: 100svh;
+	min-height: 100dvh;
 	overflow: hidden;
 }
 
 .hero {
 	position: relative;
 	overflow: hidden;
-	min-height: 100svh;
+	min-height: 100dvh;
 	background-color: #000;
 	isolation: isolate;
 
@@ -46,7 +46,7 @@
 
 	&__container {
 		position: relative;
-		min-height: 100svh;
+		min-height: 100dvh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -472,7 +472,7 @@
 
 .reveal {
 	width: 100%;
-	height: 100svh;
+	height: 100dvh;
 	// min-height: 800px;
 	overflow: hidden;
 
@@ -645,7 +645,7 @@
 	// .trust__container
 	&__container {
 		padding-top: 110px;
-		min-height: 100svh;
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -809,7 +809,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-height: 100svh;
+		min-height: 100dvh;
 		@include adaptiveValue('padding-bottom', 150, 40);
 	}
 	// .blog__head
@@ -968,7 +968,7 @@
 	}
 	// .connect__container
 	&__container {
-		min-height: 100svh;
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -1033,7 +1033,7 @@
 		padding-top: 110px;
 		display: flex;
 		align-items: flex-start;
-		min-height: 100svh;
+		min-height: 100dvh;
 		row-gap: 40px;
 
 		@include adaptiveValue('column-gap', 80, 30, 0, $containerWidth, 991.98);
