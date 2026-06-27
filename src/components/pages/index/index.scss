@@ -927,16 +927,25 @@
 		padding-top: 110px;
 		display: flex;
 		align-items: flex-start;
-		justify-content: space-between;
 		min-height: 100svh;
+		row-gap: 40px;
 
 		@include adaptiveValue('column-gap', 80, 30, 0, $containerWidth, 991.98);
 		@include adaptiveValue('padding-bottom', 100, 40);
+
+		@media (width < toEm($tablet)) {
+			flex-direction: column;
+		}
+		@media (width >= toEm($tablet)) {
+			justify-content: space-between;
+		}
 	}
 	// .faq__head
 	&__head {
 		width: 100%;
-		max-width: 334px;
+		@media (width >= toEm($tablet)) {
+			max-width: 334px;
+		}
 	}
 	// .faq__title
 	&__title {
@@ -974,7 +983,10 @@
 	// .faq__spollers
 	&__spollers {
 		width: 100%;
-		max-width: 812px;
+
+		@media (width >= toEm($tablet)) {
+			max-width: 812px;
+		}
 	}
 	// .faq__spollers-item
 	&__spollers-item {
@@ -1001,6 +1013,8 @@
 		font-size: 20px;
 		text-transform: capitalize;
 		transition: color 0.25s;
+
+		@include adaptiveValue('font-size', 20, 16);
 
 		&.--spoller-active {
 			color: var(--accent-color);

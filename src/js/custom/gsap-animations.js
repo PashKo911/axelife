@@ -70,8 +70,8 @@ const CONFIG = {
 	},
 
 	mobile: {
-		scrollMultiplier: 3.8,
-		scrub: 1,
+		scrollMultiplier: 1.5,
+		scrub: 0.3,
 		panelEnter: 8,
 		revealSwipe: 5,
 		revealScrollSpeed: 0.008,
@@ -93,7 +93,7 @@ export function initHeroIntro() {
 
 	const tl = gsap.timeline({
 		defaults: {
-			duration: 0.8,
+			duration: 1,
 			ease: 'power2.out',
 		},
 	})
@@ -109,7 +109,7 @@ export function initHeroIntro() {
 				autoAlpha: 1,
 				y: 0,
 			},
-			'0.5'
+			'0.8'
 		)
 	}
 
@@ -124,7 +124,7 @@ export function initHeroIntro() {
 				autoAlpha: 1,
 				y: 0,
 			},
-			'0.5'
+			'0.8'
 		)
 	}
 
@@ -139,7 +139,7 @@ export function initHeroIntro() {
 				autoAlpha: 1,
 				y: 0,
 			},
-			'0.6'
+			'0.9'
 		)
 	}
 }
