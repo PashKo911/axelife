@@ -84,6 +84,57 @@ const CONFIG = {
 	},
 }
 
+const REVEAL_CONFIG = {
+	default: {
+		from: {
+			autoAlpha: 0,
+			y: 50,
+			scale: 0.96,
+		},
+
+		to: {
+			duration: isMobile ? 0.9 : 1.2,
+			stagger: isMobile ? 0.08 : 0.15,
+			ease: 'expo.out',
+		},
+
+		/**
+		 * Когда запускать reveal.
+		 * 1 = после полного заезда панели
+		 * 0.5 = когда панель заехала наполовину
+		 */
+		startAt: 1,
+	},
+
+	howWorks: {
+		startAt: 0.75,
+
+		from: {
+			y: 80,
+			scale: 0.92,
+		},
+
+		to: {
+			duration: 1.4,
+			stagger: 0.2,
+		},
+	},
+
+	articles: {
+		startAt: 0.4,
+
+		from: {
+			x: -60,
+			autoAlpha: 0,
+		},
+
+		to: {
+			duration: 1,
+			stagger: 0.12,
+		},
+	},
+}
+
 const C = isMobile ? CONFIG.mobile : CONFIG.desktop
 
 export function initHeroIntro() {
@@ -205,6 +256,25 @@ export function initScrollStory() {
 		autoAlpha: 0,
 		y: 48,
 	})
+
+	function createPanelRevealTimeline(panel) {
+		const elements = panel.querySelectorAll('[data-reveal]')
+
+		if (!elements.length) return null
+
+		const tl = gsap.timeline()
+
+		tl.from(elements, {
+			autoAlpha: 0,
+			y: 50,
+			scale: 0.96,
+			duration: 1.2,
+			stagger: 0.15,
+			ease: 'expo.out',
+		})
+
+		return tl
+	}
 
 	function buildMasterTimeline() {
 		const videoDuration = video.duration || HERO_VIDEO_DURATION
@@ -335,6 +405,12 @@ export function initScrollStory() {
 				label
 			)
 
+			const panelRevealTl = createPanelRevealTimeline(panel)
+
+			if (panelRevealTl) {
+				masterTl.add(panelRevealTl, `${label}+=${enterDuration}`)
+			}
+
 			if (panel.classList.contains('reveal')) {
 				masterTl.add(revealTl, `${label}+=${enterDuration}`)
 			}
@@ -371,5 +447,5 @@ export function initScrollStory() {
 }
 
 // ============================================================================
-// START APP
+// SECTION REVEALS
 // ============================================================================
