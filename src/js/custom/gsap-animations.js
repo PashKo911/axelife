@@ -369,6 +369,6 @@ export function initScrollStory() {
 	window.addEventListener('resize', handleResize)
 }
 
-// ============================================================================
-// SECTION REVEALS
-// ============================================================================
+export const refreshScrollStory = debounce(100, () => {
+	ScrollTrigger.refresh()
+})
