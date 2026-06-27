@@ -241,26 +241,6 @@ a {
 	min-height: 100svh;
 	overflow: hidden;
 }
-
-@keyframes softFadeIn {
-	0% {
-		opacity: 0;
-		transform: translateY(18px);
-		filter: blur(6px);
-	}
-
-	60% {
-		opacity: 1;
-		transform: translateY(0);
-		filter: blur(0);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0);
-		filter: blur(0);
-	}
-}
 //========================================================================================================================================================
 // small
 
@@ -505,5 +485,33 @@ a {
 		font-weight: 500;
 		line-height: 1.2;
 		letter-spacing: toEm(-0.24, 12);
+	}
+}
+//========================================================================================================================================================
+@keyframes softFadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(18px);
+		filter: blur(6px);
+	}
+
+	60% {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+		filter: blur(0);
+	}
+}
+@keyframes run {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-100%);
 	}
 }
