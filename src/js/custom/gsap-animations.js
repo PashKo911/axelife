@@ -83,87 +83,6 @@ const CONFIG = {
 		scenePaddingPanels: 4,
 	},
 }
-//========================================================================================================================================================
-// Внутренние аннимации секций
-
-const PANEL_REVEALS = [
-	{
-		panel: '.sections-wrapper',
-
-		elements: [
-			{
-				selector: '.how-works__head',
-
-				startAt: 0.6,
-
-				from: {
-					autoAlpha: 0,
-					y: 80,
-				},
-
-				to: {
-					duration: 1.2,
-					ease: 'expo.out',
-				},
-			},
-
-			{
-				selector: '.how-works__image',
-
-				startAt: 0.8,
-
-				from: {
-					autoAlpha: 0,
-					x: 100,
-				},
-
-				to: {
-					duration: 1.4,
-					ease: 'power3.out',
-				},
-			},
-
-			{
-				selector: '.how-works__items > *',
-
-				startAt: 1,
-
-				from: {
-					autoAlpha: 0,
-					y: 40,
-				},
-
-				to: {
-					duration: 1,
-					stagger: 0.15,
-					ease: 'expo.out',
-				},
-			},
-		],
-	},
-
-	{
-		panel: '.articles',
-
-		elements: [
-			{
-				selector: '.articles__head',
-
-				startAt: 0.4,
-
-				from: {
-					autoAlpha: 0,
-					y: 60,
-				},
-
-				to: {
-					duration: 1,
-					ease: 'expo.out',
-				},
-			},
-		],
-	},
-]
 const C = isMobile ? CONFIG.mobile : CONFIG.desktop
 
 export function initHeroIntro() {
@@ -399,8 +318,6 @@ export function initScrollStory() {
 			const scrollDuration = internalScroll * C.revealScrollSpeed
 			const label = `panel-${index + 1}`
 
-			const revealConfig = PANEL_REVEALS.find((item) => panel.matches(item.panel))
-
 			masterTl.addLabel(label)
 
 			// Заезд панели
@@ -416,23 +333,6 @@ export function initScrollStory() {
 				},
 				label
 			)
-
-			if (revealConfig) {
-				revealConfig.elements.forEach((item) => {
-					const targets = panel.querySelectorAll(item.selector)
-
-					if (!targets.length) return
-
-					masterTl.from(
-						targets,
-						{
-							...item.from,
-							...item.to,
-						},
-						`${label}+=${enterDuration * item.startAt}`
-					)
-				})
-			}
 
 			if (panel.classList.contains('reveal')) {
 				masterTl.add(revealTl, `${label}+=${enterDuration}`)
