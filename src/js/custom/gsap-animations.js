@@ -21,7 +21,7 @@ const isMobile = window.innerWidth < 768
 // ============================================================================
 /**
  * SCROLL EXPERIENCE CONFIG
- * Управляет "ощущением скорости" всей сцены ScrollTrigger
+ * Общие настройки скролла сайта
  */
 const CONFIG = {
 	desktop: {
@@ -83,58 +83,87 @@ const CONFIG = {
 		scenePaddingPanels: 4,
 	},
 }
+//========================================================================================================================================================
+// Внутренние аннимации секций
 
-const REVEAL_CONFIG = {
-	default: {
-		from: {
-			autoAlpha: 0,
-			y: 50,
-			scale: 0.96,
-		},
+const PANEL_REVEALS = [
+	{
+		panel: '.sections-wrapper',
 
-		to: {
-			duration: isMobile ? 0.9 : 1.2,
-			stagger: isMobile ? 0.08 : 0.15,
-			ease: 'expo.out',
-		},
+		elements: [
+			{
+				selector: '.how-works__head',
 
-		/**
-		 * Когда запускать reveal.
-		 * 1 = после полного заезда панели
-		 * 0.5 = когда панель заехала наполовину
-		 */
-		startAt: 1,
+				startAt: 0.6,
+
+				from: {
+					autoAlpha: 0,
+					y: 80,
+				},
+
+				to: {
+					duration: 1.2,
+					ease: 'expo.out',
+				},
+			},
+
+			{
+				selector: '.how-works__image',
+
+				startAt: 0.8,
+
+				from: {
+					autoAlpha: 0,
+					x: 100,
+				},
+
+				to: {
+					duration: 1.4,
+					ease: 'power3.out',
+				},
+			},
+
+			{
+				selector: '.how-works__items > *',
+
+				startAt: 1,
+
+				from: {
+					autoAlpha: 0,
+					y: 40,
+				},
+
+				to: {
+					duration: 1,
+					stagger: 0.15,
+					ease: 'expo.out',
+				},
+			},
+		],
 	},
 
-	howWorks: {
-		startAt: 0.75,
+	{
+		panel: '.articles',
 
-		from: {
-			y: 80,
-			scale: 0.92,
-		},
+		elements: [
+			{
+				selector: '.articles__head',
 
-		to: {
-			duration: 1.4,
-			stagger: 0.2,
-		},
+				startAt: 0.4,
+
+				from: {
+					autoAlpha: 0,
+					y: 60,
+				},
+
+				to: {
+					duration: 1,
+					ease: 'expo.out',
+				},
+			},
+		],
 	},
-
-	articles: {
-		startAt: 0.4,
-
-		from: {
-			x: -60,
-			autoAlpha: 0,
-		},
-
-		to: {
-			duration: 1,
-			stagger: 0.12,
-		},
-	},
-}
-
+]
 const C = isMobile ? CONFIG.mobile : CONFIG.desktop
 
 export function initHeroIntro() {
@@ -257,25 +286,6 @@ export function initScrollStory() {
 		y: 48,
 	})
 
-	function createPanelRevealTimeline(panel) {
-		const elements = panel.querySelectorAll('[data-reveal]')
-
-		if (!elements.length) return null
-
-		const tl = gsap.timeline()
-
-		tl.from(elements, {
-			autoAlpha: 0,
-			y: 50,
-			scale: 0.96,
-			duration: 1.2,
-			stagger: 0.15,
-			ease: 'expo.out',
-		})
-
-		return tl
-	}
-
 	function buildMasterTimeline() {
 		const videoDuration = video.duration || HERO_VIDEO_DURATION
 		const overlayPanels = panels.slice(1)
@@ -389,6 +399,8 @@ export function initScrollStory() {
 			const scrollDuration = internalScroll * C.revealScrollSpeed
 			const label = `panel-${index + 1}`
 
+			const revealConfig = PANEL_REVEALS.find((item) => panel.matches(item.panel))
+
 			masterTl.addLabel(label)
 
 			// Заезд панели
@@ -405,10 +417,21 @@ export function initScrollStory() {
 				label
 			)
 
-			const panelRevealTl = createPanelRevealTimeline(panel)
+			if (revealConfig) {
+				revealConfig.elements.forEach((item) => {
+					const targets = panel.querySelectorAll(item.selector)
 
-			if (panelRevealTl) {
-				masterTl.add(panelRevealTl, `${label}+=${enterDuration}`)
+					if (!targets.length) return
+
+					masterTl.from(
+						targets,
+						{
+							...item.from,
+							...item.to,
+						},
+						`${label}+=${enterDuration * item.startAt}`
+					)
+				})
 			}
 
 			if (panel.classList.contains('reveal')) {
