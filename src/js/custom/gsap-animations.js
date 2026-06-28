@@ -3,10 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { debounce } from '../common/functions'
 import { addTouchAttr, addLoadedAttr } from '@js/common/functions.js'
 
-// ============================================================================
-// APP INIT
-// ============================================================================
-
 gsap.registerPlugin(ScrollTrigger)
 
 gsap.ticker.lagSmoothing(0)

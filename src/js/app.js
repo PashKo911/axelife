@@ -5,7 +5,7 @@ import { initSliders } from '../components/layout/slider/slider.js'
 
 addTouchAttr()
 
-// initLenis()
+initLenis()
 
 addLoadedAttr(async () => {
 	await initSliders()

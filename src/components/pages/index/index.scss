@@ -312,6 +312,13 @@
 	}
 	// .how-works__content-slide
 	&__content-slide {
+		.swiper-fade & {
+			pointer-events: none;
+		}
+
+		.swiper-fade &.swiper-slide-active {
+			pointer-events: all;
+		}
 	}
 	// .how-works__thumbs-slider
 	&__thumbs-slider {
@@ -381,7 +388,6 @@
 	&__media-slider {
 		min-width: 0;
 		flex-shrink: 0;
-		flex-basis: 88.0488%;
 		flex-basis: 86.7788%;
 	}
 	// .how-works__media-wrapper
