@@ -364,7 +364,3 @@ export function initScrollStory() {
 
 	window.addEventListener('resize', handleResize)
 }
-
-export const refreshScrollStory = debounce(100, () => {
-	ScrollTrigger.refresh()
-})

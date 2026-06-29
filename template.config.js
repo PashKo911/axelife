@@ -16,7 +16,7 @@ export default {
 		filename: '_components.html',
 	},
 	newpage: {
-		copyfromindex: false,
+		copyfromindex: true,
 		usetemplate: 'main',
 	},
 	git: {
@@ -27,13 +27,13 @@ export default {
 		dev: true,
 		build: false,
 		position: 'left',
-		color: '#ffffff',
-		background: 'rgba(51, 51, 51, 0.5)',
+		color: '#000',
+		background: '#f1f1f1',
 		transition: '300',
 	},
 	statistics: {
-		enable: false,
-		showonbuild: false,
+		enable: true,
+		showonbuild: true,
 	},
 	server: {
 		path: './',

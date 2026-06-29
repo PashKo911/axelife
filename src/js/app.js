@@ -8,9 +8,7 @@ initLenis()
 
 const updateFaqHeight = () => {
 	const faqSectionContainer = document.querySelector('.faq__container')
-
 	if (!faqSectionContainer) return
-
 	document.documentElement.style.setProperty('--faq-height', `${faqSectionContainer.offsetHeight}px`)
 }
 

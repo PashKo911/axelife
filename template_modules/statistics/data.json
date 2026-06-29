@@ -1,6 +1,30 @@
 {
   "statistics": {
-    "sessions": [],
-    "files": []
+    "sessions": [
+      {
+        "date": "29.06.2026",
+        "start": 1782714454115,
+        "end": 1782716566705
+      },
+      {
+        "date": "29.06.2026",
+        "start": 1782716575184,
+        "end": 1782716597522
+      },
+      {
+        "date": "29.06.2026",
+        "start": 1782716599966,
+        "end": 1782716599966
+      }
+    ],
+    "files": [
+      "test.html",
+      "_components.html",
+      "style.scss",
+      "index.scss",
+      "gsap-animations.js",
+      "app.js",
+      "index.html"
+    ]
   }
 }

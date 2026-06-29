@@ -17,25 +17,54 @@
 		flex-direction: column;
 		gap: 30px;
 	}
+
+	.components__item {
+		display: flex;
+		gap: 30px;
+	}
 </style>
 
 <body>
 	<div class="components">
 		<div class="components__item">
-			<include src="@components/forms/button/button.html"></include>
+			<a href="#" class="hero__content-link button button--primary">
+				Discover
+			</a>
+			<a href="#" class="hero__content-link button button--primary">
+				Discover
+			</a>
+			<a href="#" class="blog__button button button--primary button--icon">
+				Read all Articles
+				<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<g clip-path="url(#clip0_20_75)">
+						<path d="M2.94633 12.8854L11.6126 4.21907M3.27336 4.21907L11.6126 4.21907L11.6126 12.5583"
+							stroke-width="1.4" />
+					</g>
+					<defs>
+						<clipPath id="clip0_20_75">
+							<rect width="15" height="15" fill="white" />
+						</clipPath>
+					</defs>
+				</svg>
+			</a>
 		</div>
 		<div class="components__item">
-			<include src="@components/custom/blockhead/blockhead.html"></include>
-		</div>
-		<div class="components__item">
-			<div data-fls-border class="border-item">
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae excepturi dignissimos hic tenetur dolore
-				consequuntur eveniet ipsa optio illum doloremque porro delectus distinctio eaque, magni quibusdam sed.
-				Quia, animi aut!
-			</div>
-		</div>
-		<div class="components__item">
-			<include src="@components/custom/letstalk/letstalk.html"></include>
+			<button type="button" aria-label="previous slide" class="how-works__swiper-button-prev swiper-button">
+				<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+					<path
+						d="M13.0671 4.19823L12.0061 3.16231L6.22706 8.80808C6.1339 8.89854 6.05997 9.00612 6.00952 9.12461C5.95908 9.24311 5.93311 9.37019 5.93311 9.49853C5.93311 9.62687 5.95908 9.75395 6.00952 9.87244C6.05997 9.99094 6.1339 10.0985 6.22706 10.189L12.0061 15.8377L13.0661 14.8018L7.64206 9.49999L13.0671 4.19823Z"
+						fill="#404040" />
+				</svg>
+
+			</button>
+			<button type="button" aria-label="next slide" class="how-works__swiper-button-next swiper-button">
+				<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
+					<path
+						d="M5.93294 4.19823L6.99394 3.16231L12.7729 8.80808C12.8661 8.89854 12.94 9.00612 12.9905 9.12461C13.0409 9.24311 13.0669 9.37019 13.0669 9.49853C13.0669 9.62687 13.0409 9.75395 12.9905 9.87244C12.94 9.99094 12.8661 10.0985 12.7729 10.189L6.99394 15.8377L5.93394 14.8018L11.3579 9.49999L5.93294 4.19823Z"
+						fill="#404040" />
+				</svg>
+
+			</button>
 		</div>
 	</div>
 </body>
