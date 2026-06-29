@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<include src="@components/layout/head/head.html" locals='{
+		"title":"Розробка компонентів", 
+		"preloader": {
+			"enable":"false",
+			"once":"false"
+		},
+		"keywords":"", 
+		"description":""
+	}'>
+</include>
+<style>
+	.components {
+		padding: 50px;
+		display: flex;
+		flex-direction: column;
+		gap: 30px;
+	}
+</style>
+
+<body>
+	<div class="components">
+		<div class="components__item">
+			<include src="@components/forms/button/button.html"></include>
+		</div>
+		<div class="components__item">
+			<include src="@components/custom/blockhead/blockhead.html"></include>
+		</div>
+		<div class="components__item">
+			<div data-fls-border class="border-item">
+				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quae excepturi dignissimos hic tenetur dolore
+				consequuntur eveniet ipsa optio illum doloremque porro delectus distinctio eaque, magni quibusdam sed.
+				Quia, animi aut!
+			</div>
+		</div>
+		<div class="components__item">
+			<include src="@components/custom/letstalk/letstalk.html"></include>
+		</div>
+	</div>
+</body>
+<script type="module" src="@js/app.js"></script>
+
+</html>

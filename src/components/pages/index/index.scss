@@ -1034,12 +1034,15 @@
 
 .faq {
 	background-color: var(--contrast-color);
+
 	// .faq__container
 	&__container {
 		padding-top: 110px;
 		display: flex;
+		position: relative;
+		z-index: 2;
 		align-items: flex-start;
-		min-height: 100dvh;
+		min-height: var(--faq-height);
 		row-gap: 40px;
 
 		@include adaptiveValue('column-gap', 80, 30, 0, $containerWidth, 991.98);
